@@ -1,9 +1,13 @@
-
 const yesButton = document.getElementById('yesButton');
 const noButton = document.getElementById('noButton');
 const imageDisplay = document.getElementById('imageDisplay');
 const valentineQuestion = document.getElementById('valentineQuestion');
 const responseButtons = document.getElementById('responseButtons');
+
+// 1. Background Music Setup
+const bgMusic = new Audio('./sounds/music.mp3');
+bgMusic.loop = true;
+bgMusic.volume = 0.5;
 
 let noClickCount = 0;
 let buttonHeight = 48;
@@ -11,12 +15,12 @@ let buttonWidth = 80;
 let fontSize = 20;
 const imagePaths = ['./images/image1.gif','./images/image2.gif','./images/image3.gif','./images/image4.gif','./images/image5.gif','./images/image6.gif','./images/image7.gif'];
 
-//sound
+// Sound effects function
 function playSound(soundPath) {const audio = new Audio(soundPath); audio.play();}
 
 const getRandomNumber = (num) => {return Math.floor(Math.random() * (num + 1));};
   
-  //raunaway button
+  // runaway button logic
   const runawayButtonLogic = (button) => {
     const moveButton = function () {
       if (this.textContent.trim() === "Say yes or else...") {
@@ -38,20 +42,26 @@ const getRandomNumber = (num) => {return Math.floor(Math.random() * (num + 1));}
       duration: 500,
     });
   
-  //no button
+  // no button
   noButton.addEventListener("click", () => {
     playSound('./sounds/click.mp3');
+
+    // 2. Start background music on first click (Browser requirement)
+    if (bgMusic.paused) {
+        bgMusic.play().catch(e => console.log("Music waiting for interaction"));
+    }
+
     if (noClickCount < 4) {
       noClickCount++;
       imageDisplay.src = imagePaths[noClickCount] || "./images/image1.gif";
   
-      //yes button gets thicc
+      // yes button gets thicc
       buttonHeight += 35; buttonWidth += 35; fontSize += 25;
       yesButton.style.height = `${buttonHeight}px`;
       yesButton.style.width = `${buttonWidth}px`;
       yesButton.style.fontSize = `${fontSize}px`;
   
-      //no button text
+      // no button text
       const messages = ["No","Are you sure?","Babyy please?","Don't do this to me :(","Say yes or else...",];
   
       if (noClickCount === 4) {
@@ -72,7 +82,6 @@ const getRandomNumber = (num) => {return Math.floor(Math.random() * (num + 1));}
         newButton.style.fontWeight = "bold";
   
         noButton.replaceWith(newButton);
-  //make no button go zoom with new button
         runawayButtonLogic(newButton);
       } else {
         noButton.textContent = messages[noClickCount];
@@ -80,13 +89,19 @@ const getRandomNumber = (num) => {return Math.floor(Math.random() * (num + 1));}
     }
   });
   
-  //yes button
+  // yes button
   yesButton.addEventListener("click", () => {
     playSound('./sounds/click.mp3');
+    
+    // 3. Ensure music plays if they click Yes immediately
+    if (bgMusic.paused) {
+        bgMusic.play().catch(e => console.log("Music waiting for interaction"));
+    }
+
     imageDisplay.remove(); 
     responseButtons.style.display = "none"; 
   
-    //yes page
+    // yes page content
     valentineQuestion.innerHTML = `
       <img src="./images/image7.gif" alt="Celebration duckie" style="display: block; margin: 0 auto; width: 200px; height: auto;"/>
       Congratulations!!<br>
@@ -94,14 +109,18 @@ const getRandomNumber = (num) => {return Math.floor(Math.random() * (num + 1));}
     `;
     valentineQuestion.style.textAlign = "center"; 
   
-    //make image go boing
+    // make image go boing
     const bounceImage = document.createElement("img");
-    bounceImage.src = "./images/baddie.jpg";
+    
+    // 4. Match filename from your GitHub screenshot (baddie.jpg)
+    bounceImage.src = "./images/baddie.jpg"; 
+    
     bounceImage.alt = "Baddie";
     bounceImage.style.position = "absolute";
     bounceImage.style.width = "300px";
     bounceImage.style.height = "325px";
     bounceImage.style.borderRadius = "50%";
+    bounceImage.style.objectFit = "cover";
     document.body.appendChild(bounceImage);
   
     startBouncing(bounceImage);
@@ -152,5 +171,3 @@ const getRandomNumber = (num) => {return Math.floor(Math.random() * (num + 1));}
   
     move();
   }
-
-  
