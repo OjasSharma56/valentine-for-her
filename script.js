@@ -9,11 +9,13 @@ const bgMusic = new Audio('./sounds/music.mp3');
 bgMusic.loop = true;
 bgMusic.volume = 0.5;
 
-// Function to handle the Autoplay block
+// Improved function to handle the Autoplay block
 const startMusic = () => {
   if (bgMusic.paused) {
-    bgMusic.play().catch(error => {
-      console.log("Autoplay prevented. Music will start on next interaction.");
+    bgMusic.play().then(() => {
+      console.log("Music started successfully");
+    }).catch(error => {
+      console.log("Audio waiting for more interaction:", error);
     });
   }
 };
@@ -56,7 +58,8 @@ const getRandomNumber = (num) => {
   
   // No Button Logic
   noButton.addEventListener("click", () => {
-    startMusic(); // Trigger background music
+    // FORCE START MUSIC ON FIRST CLICK
+    startMusic(); 
     playSound('./sounds/click.mp3');
 
     if (noClickCount < 4) {
@@ -96,7 +99,8 @@ const getRandomNumber = (num) => {
   
   // Yes Button Logic
   yesButton.addEventListener("click", () => {
-    startMusic(); // Ensure music plays
+    // ENSURE MUSIC PLAYS
+    startMusic(); 
     playSound('./sounds/click.mp3');
     imageDisplay.remove(); 
     responseButtons.style.display = "none"; 
