@@ -1,5 +1,3 @@
-import confetti from 'https://cdn.skypack.dev/canvas-confetti';
-import anime from 'https://cdn.skypack.dev/animejs';
 
 const yesButton = document.getElementById('yesButton');
 const noButton = document.getElementById('noButton');
@@ -154,4 +152,5 @@ const getRandomNumber = (num) => {return Math.floor(Math.random() * (num + 1));}
   
     move();
   }
+
   
